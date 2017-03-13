@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 
 app.put('/api/content/:contentId/:quality/:segment', function(req, res) {
-  console.log("Put rvc !");
+  console.log("Put rcv !");
   var contentId = req.params.contentId;
   var bitrate = req.params.quality;
   var segment = req.params.segment;
@@ -24,7 +24,7 @@ app.put('/api/content/:contentId/:quality/:segment', function(req, res) {
 });
 
 
-app.listen(8081);
+app.listen(8081, '127.0.0.1');
 console.log("Serveur web lancé sur localhost:8081 ...");
 
 // if (!fs.existsSync(dir)){
