@@ -1,0 +1,24 @@
+{
+  "name": "app-distrib",
+  "version": "1.0.0",
+  "description": "Distrib : Dash storage manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mms-livestream/app-distrib.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mms-livestream/app-distrib/issues"
+  },
+  "homepage": "https://github.com/mms-livestream/app-distrib#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "fs": "0.0.1-security",
+    "mms-core": "^0.1.12"
+  }
+}
