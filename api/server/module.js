@@ -9,7 +9,7 @@ module.exports = options => {
   let service = options.service;
   let router = express.Router();
 
-  router.post("/api/content/:contentId/:quality/:segment", function(req, res) {
+  router.put("/content/:contentId/:quality/:segment", function(req, res) {
     console.log("Post rcv !");
     var contentId = req.params.contentId;
     var bitrate = req.params.quality;
@@ -32,7 +32,7 @@ module.exports = options => {
     });
   });
 
-  router.post("/api/mp4/:contentId/:quality/:segment", function(req, res) {
+  router.put("/mp4/:contentId/:quality/:segment", function(req, res) {
     console.log("Post rcv !");
     var contentId = req.params.contentId;
     var bitrate = req.params.quality;
