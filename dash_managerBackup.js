@@ -45,7 +45,8 @@ app.put('/api/mp4/:contentId/:quality/:segment', function(req, res) {
 });
 
 
-app.listen(8087);
+var server = app.listen(8087);
+server.timeout = 100000000;
 console.log("Serveur web lancé sur localhost:8081 ...");
 
 // if (!fs.existsSync(dir)){

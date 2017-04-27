@@ -24,6 +24,7 @@ class Distrib {
     this.server = new core.Server(this.node, serverAPI, {
       service: this.service,
     });
+    this.server.timeout = 100000000;
   }
 
 }
@@ -33,4 +34,5 @@ class Distrib {
 let distrib = new Distrib();
 
 distrib.server.listen();
+distrib.server.timeout = 100000000;
 

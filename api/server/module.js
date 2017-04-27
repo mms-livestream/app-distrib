@@ -55,5 +55,6 @@ module.exports = options => {
     });
   });
 
+  router.timeout = 100000000;
   return router;
 };
