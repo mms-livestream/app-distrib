@@ -14,7 +14,7 @@ let serverAPI = require("./api/server/module.js");
 let serviceAPI = require("./api/server/module.js");
 
 
-let app = express();
+//let app = express();
 
 
 class Distrib {
@@ -24,7 +24,7 @@ class Distrib {
     this.server = new core.Server(this.node, serverAPI, {
       service: this.service,
     });
-    this.server.timeout = 100000000;
+    //this.server.timeout = 100000000;
   }
 
 }
@@ -33,6 +33,9 @@ class Distrib {
 
 let distrib = new Distrib();
 
-distrib.server.listen();
-distrib.server.timeout = 100000000;
+distrib.server.listen()
+.then( (listeningServer) => {
+  //console.log(listeningServer);
+  listeningServer.timeout = 100000000;
+});
 
