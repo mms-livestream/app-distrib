@@ -64,7 +64,7 @@ class Distrib {
     this.service = new core.Service(this.node, serviceAPI);
     this.server = new core.Server(this.node, serverAPI, {
       service: this.service,
-      //toolbox: {getCPU: getCPU}
+      //toolbox: {getCPU: getCPU, getBandwidth: getBandwidth}
     });
     //this.server.timeout = 100000000;
   }
