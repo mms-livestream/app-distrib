@@ -29,6 +29,11 @@ child2 = exec("speedtest-cli | grep 'Upload:' | cut -c9-13", function(error2, st
 
 let app = express();
 
+//Seek for the @IP
+child3 = exec("hostname -I", function(error3, stdout3, stderr3) {	    
+  send = JSON.stringify(stdout3).pipe(request.put('http://@IP' +"/api/????));
+});
+
 //Seek for the uploading datas to set
 child = exec("cat /sys/class/net/wlo1/statistics/tx_bytes",function(error,stdout,stderr) {  
     tmp = stdout;
