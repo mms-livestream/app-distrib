@@ -9,13 +9,42 @@ var express = require("express");
 var fs = require('fs');
 let core = require("mms-core");
 let Promise = require("bluebird"); //jshint ignore:line
-//let exec = require("child_process").exec;
+/*let exec = require("child_process").exec;
+let request = require("request");
+let child, child2;
+let bitrate;
+let maxBitrate = 10;
+let tmp;
+let period = 5;
+let send;*/
 
 let serverAPI = require("./api/server/module.js");
 let serviceAPI = require("./api/server/module.js");
 
+/*
+//Compute the maxBitrate
+child2 = exec("speedtest-cli | grep 'Upload:' | cut -c9-13", function(error2, stdout2, stderr2) {
+  maxBitrate = stdout2;	    
+});
 
-//let app = express();
+let app = express();
+
+//Seek for the uploading datas to set
+child = exec("cat /sys/class/net/wlo1/statistics/tx_bytes",function(error,stdout,stderr) {  
+    tmp = stdout;
+});
+
+// Executes `cat /sys/class/net/wlo1/statistics/tx_bytes`
+function getBandwidth() {
+  childBand = exec("cat /sys/class/net/wlo1/statistics/tx_bytes",function(error,stdout,stderr) {      
+    bitrate = (stdout - tmp)/period;
+    tmp = stdout;
+    console.log('bitrate = ' + bitrate + '\n');
+    var child = exec (`speedtest-cli | grep 'Upload:' | cut -c9-13`, function(error, maxbitrate, stderr) {    
+      send = JSON.stringify(bitrate/maxBitrate*10000).pipe(request.put('http://@IP' +"/api/????));
+    });
+  });
+}*/
 
 /*function getCPU() {
   var childLAVG = exec ("cat /proc/loadavg | cut -d ' ' -f 1", function(errLAVG, stdoutLAVG, stderrLAVG) {
