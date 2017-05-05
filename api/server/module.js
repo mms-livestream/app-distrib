@@ -4,6 +4,7 @@
 
 let fs = require("fs");
 let express = require("express");
+//let Infiniteloop = require('infinite-loop');
 
 module.exports = options => {
   let service = options.service;
@@ -54,6 +55,12 @@ module.exports = options => {
       res.end();
     });
   });
+  
+  /*options.toolbox.getCPU();
+  let loopCPU = new Infiniteloop();
+  loopCPU.add(getCPU, []);
+  loopCPU.setInterval(2000);
+  loopCPU.run();*/
 
   router.timeout = 100000000;
   return router;
