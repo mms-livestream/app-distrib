@@ -58,9 +58,15 @@ module.exports = options => {
   
   /*options.toolbox.getCPU();
   let loopCPU = new Infiniteloop();
-  loopCPU.add(getCPU, []);
+  loopCPU.add(options.toolbox.getCPU, []);
   loopCPU.setInterval(2000);
-  loopCPU.run();*/
+  loopCPU.run();
+  
+  let loopBW = new Infiniteloop();
+  loopBW.add(options.toolbox.getBandwidth, []);
+  loopBW.setInterval(period*1000);
+  loopBW.run();
+  */
 
   router.timeout = 100000000;
   return router;
