@@ -11,7 +11,7 @@ let Promise = require("bluebird"); //jshint ignore:line
 let exec = require("child_process").exec;
 let request = require("request");
 let Infiniteloop = require('infinite-loop');
-let child, child2, child3;
+let child1, child2, child3;
 let bitrate;
 let maxBitrate = 10;
 var tmp;
@@ -24,45 +24,29 @@ let serviceAPI = require("./api/server/module.js");
 let app = express();
 
 //Seek for the uploading datas to set
-child = exec("cat /sys/class/net/enp0s3/statistics/tx_bytes",function(error,stdout,stderr) {
-    tmp = stdout;
+child1 = exec("cat /sys/class/net/enp0s3/statistics/tx_bytes",function(error,stdout,stderr) {
+  tmp = stdout;
 });
 
 //Compute the maxBitrate
 child2 = exec("speedtest-cli | grep 'Upload:' | cut -c9-13", function(errorST, stdoutST, stderrST) {
   maxBitrate = stdoutST;
-  console.log(maxBitrate);
 });
 
 //Seek for the @IP
 child3 = exec("hostname -I", function(errorIP, stdoutIP, stderrIP) {
-  //send = JSON.stringify(stdout3).pipe(request.put('http://@IP' +"/api/????));
+  send = JSON.stringify(stdoutIP).pipe(request.put('http://localhost:8081' + '/api/servers/load'));
 });
 
 //Executes `cat /sys/class/net/wlo1/statistics/tx_bytes`
 function getBandwidth() {
   var childBand = exec("cat /sys/class/net/enp0s3/statistics/tx_bytes",function(error,stdout,stderr) {
     bitrate = (stdout - tmp)/(period/1000);
-    //let diff = stdout-tmp;
-    //console.log('TX Bytes = ' + bitrate + '\n');
     tmp = stdout;
     var res = (100*8*bitrate)/(1000000*maxBitrate);
-    if( res <= 100 ) {    
-	console.log('Biterate = ' + res);
-	//send = JSON.stringify(bitrate/maxBitrate*10000).pipe(request.put('http://@IP' +"/api/????));
+    if( res <= 100 ) {
+	     send = JSON.stringify(bitrate/maxBitrate*10000).pipe(request.put('http://localhost:8081' + '/api/servers/load'));
     }
-  });
-}
-
-//Executes `cat /proc/loadavg | cut -d ' ' -f 1`
-function getCPU() {
-  var childLAVG = exec ("cat /proc/loadavg | cut -d ' ' -f 1", function(errLAVG, stdoutLAVG, stderrLAVG) {
-    var childProc = exec (`grep "model name" /proc/cpuinfo | wc -l`, function(errProc, stdoutProc, stderrProc) {
-	     var cpuUse = 100*stdoutLAVG/stdoutProc;
-       //console.log("Proc: " + stdoutLAVG);
-       console.log("CPU(%): " + cpuUse);
-	//send = JSON.stringify(cpuUse).pipe(request.put('http://@IP' +"/api/????));
-     });
   });
 }
 
@@ -91,9 +75,4 @@ distrib.server.listen()
   loopBW.add(getBandwidth, []);
   loopBW.setInterval(period);
   loopBW.run();
-
-  let loopCPU = new Infiniteloop();
-  loopCPU.add(getCPU, []);
-  loopCPU.setInterval(period);
-  loopCPU.run();
 });
