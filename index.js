@@ -11,14 +11,15 @@ let Promise = require("bluebird"); //jshint ignore:line
 let exec = require("child_process").exec;
 let request = require("request");
 let Infiniteloop = require('infinite-loop');
-let info = fs.createWriteStream('info.json'); // Json containing ipAdress and uploading bitrate
+let info; // Json containing ipAdress and uploading bitrate
 let child1, child2, child3;
 let bitrate;
 let maxBitrate = 10;
+let ipAddress;
 var tmp;
 let period = 1000; //30 secondes for the first loopBW
-let send;
-let dest = core.dConfig["NODE_DB_CONTROLLER"].service.host + ':' + core.dConfig["NODE_DB_CONTROLLER"].service.port;
+let cpt = 0; // To show "OK sent" only once
+let dest = core.dConfig["NODE_DB_CONTROLLER"].server.host + ':' + core.dConfig["NODE_DB_CONTROLLER"].server.port;
 
 let serverAPI = require("./api/server/module.js");
 let serviceAPI = require("./api/server/module.js");
@@ -33,13 +34,12 @@ child1 = exec("cat /sys/class/net/wlo1/statistics/tx_bytes",function(error,stdou
 //Compute the maxBitrate
 child2 = exec("speedtest-cli | grep 'Upload:' | cut -c9-13", function(errorST, stdoutST, stderrST) {
   maxBitrate = stdoutST;
-  console.log(maxBitrate);
+  // console.log(maxBitrate);
 });
 
 //Seek for the @IP
-child3 = exec("hostname -I", function(errorIP, stdoutIP, stderrIP) {
-  info.ipAddress = stdoutIP;
-  // send = fs.createReadStream('./info.json').pipe(request.put('http://' + dest + '/api/servers/load'));
+child3 = exec("hostname -I | cut -c1-13 | tr -d '\n'", function(errorIP, stdoutIP, stderrIP) {
+  ipAddress = stdoutIP;
 });
 
 //Executes `cat /sys/class/net/wlo1/statistics/tx_bytes`
@@ -49,12 +49,32 @@ function getBandwidth() {
     tmp = stdout;
     var res = Math.round((100*8*bitrate)/(1000000*maxBitrate));
     if( res <= 100 ) {
-      info.bitrate = res;
+      bitrate = res;
     } else {
-      info.bitrate = 100;
+      bitrate = 100;
     }
-    console.log(info.ipAdress + ' ' + info.bitrate);
-    send = fs.createReadStream('./info.json').pipe(request.put('http://' + dest + '/api/servers/load'));
+    let info = {"ipAddress": ipAddress, "bitrate":bitrate};
+    let options = {
+      url: `http://${dest}/api/servers/load`,
+      method: 'POST',
+      json: true,
+      headers: {
+           'Content-Type': 'application/json'
+      },
+      body: info
+    };
+    // console.log(options.body.ipAddress);
+    //Do request
+    request(options, function(err, res) {
+      if (!err && res.statusCode === 200) {
+        if (cpt == 0) {
+          console.log("OK sent");
+          cpt = 1;
+        }
+      } else {
+        console.log("Error:" + err);
+      }
+    });
   });
 }
 
