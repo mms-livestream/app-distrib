@@ -48,7 +48,7 @@ function getBandwidth() {
     bitrate = (stdout - tmp)/(period/1000);
     tmp = stdout;
     var res = Math.round((100*8*bitrate)/(1000000*maxBitrate));
-    if( res <= 100 ) {
+    if( res < 100 ) {
       bitrate = res;
     } else {
       bitrate = 100;
