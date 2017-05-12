@@ -17,7 +17,7 @@ let bitrate;
 let maxBitrate = 10;
 let ipAddress;
 var tmp;
-let period = 1000; //30 secondes for the first loopBW
+let period = 5000; //30 secondes for the first loopBW
 let cpt = 0; // To show "OK sent" only once
 let dest = core.dConfig["NODE_DB_CONTROLLER"].server.host + ':' + core.dConfig["NODE_DB_CONTROLLER"].server.port;
 
