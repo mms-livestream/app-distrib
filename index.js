@@ -27,7 +27,7 @@ let serviceAPI = require("./api/server/module.js");
 let app = express();
 
 //Seek for the uploading datas to set
-child1 = exec("cat /sys/class/net/wlo1/statistics/tx_bytes",function(error,stdout,stderr) {
+child1 = exec("cat /sys/class/net/wlp58s0/statistics/tx_bytes",function(error,stdout,stderr) {
   tmp = stdout;
 });
 
@@ -44,7 +44,7 @@ child3 = exec("hostname -I | cut -c1-13 | tr -d '\n'", function(errorIP, stdoutI
 
 //Executes `cat /sys/class/net/wlo1/statistics/tx_bytes`
 function getBandwidth() {
-  var childBand = exec("cat /sys/class/net/wlo1/statistics/tx_bytes",function(error,stdout,stderr) {
+  var childBand = exec("cat /sys/class/net/wlp58s0/statistics/tx_bytes",function(error,stdout,stderr) {
     bitrate = (stdout - tmp)/(period/1000);
     tmp = stdout;
     var res = Math.round((100*8*bitrate)/(1000000*maxBitrate));
